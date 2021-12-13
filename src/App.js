@@ -2,62 +2,58 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import './App.css';
 
+import AddContactForm from './Components/AddContactForm';
+import Filter from './Components/Filter/Filter';
+import ContactList from './Components/ContactsList/ContactList';
+
 class App extends Component {
   state = {
     // contacts: [],
-
     contacts: [
       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
       { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    name: '',
-    number: '',
     filter: '',
   };
 
-  addContact = e => {
-    // console.log(newContact);
+  addContact = newContact => {
+    const contact = {
+      id: shortid.generate(),
+      name: newContact.name,
+      number: newContact.number,
+    };
 
-    // const contact = {
-    //   id: shortid.generate(),
-    //   name: newContact.name,
-    // };
-    e.preventDefault();
-    this.setState({
-      contacts: [
-        {
-          id: shortid.generate(),
-          name: this.state.name,
-          number: this.state.number,
-        },
-        ...this.state.contacts,
-      ],
-    });
-    this.setState({ name: '', number: '' });
-  };
+    if (
+      this.state.contacts.find(
+        contact => contact.name.toLowerCase() === newContact.name.toLowerCase(),
+      )
+    ) {
+      alert(newContact.name + ' is already in contacts');
+      return;
+    }
 
-  // addContact = newContact => {
-  //   if (this.state.contacts.find(contact => contact.name === newContact.name)) {
-  //     alert(newContact.name + 'is already exist in phonebook');
-  //     return;
-  //   }
-  //   this.setState(prevState => ({
-  //     contacts: [newContact, ...prevState.contacts],
-  //   }));
-  // };
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState(prevState => ({
+      contacts: [contact, ...prevState.contacts],
+    }));
   };
 
   changeFilter = e => {
-    this.setState({ filter: e.target.value });
+    this.setState({ filter: e.currentTarget.value });
   };
+
   filterContacts = () => {
+    const normalizedFilter = this.state.filter.toLowerCase();
     return this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
+      contact.name.toLowerCase().includes(normalizedFilter),
     );
+  };
+
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
   };
 
   render() {
@@ -65,50 +61,15 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Phonebook</h1>
-        <form onSubmit={this.addContact}>
-          <label>
-            Name
-            <input
-              type="text"
-              name="name"
-              value={this.state.name}
-              // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-              onChange={this.handleChange}
-            />
-          </label>
-          <label>
-            Number
-            <input
-              type="tel"
-              name="number"
-              value={this.state.number}
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-              onChange={this.handleChange}
-            />
-          </label>
-          <button type="submit">Add contact</button>
-        </form>
+        <AddContactForm onSubmit={this.addContact} />
+
         <h2>Contacts</h2>
-        <label>
-          Find contacts by name
-          <input
-            type="text"
-            value={this.state.filter}
-            onChange={this.changeFilter}
-          ></input>
-        </label>
-        <ul>
-          {filteredContacts.map(contact => (
-            <li key={contact.id}>
-              {contact.name}
-              {contact.number}
-            </li>
-          ))}
-        </ul>
+        <Filter value={this.state.filter} onChangeFilter={this.changeFilter} />
+
+        <ContactList
+          filteredContacts={filteredContacts}
+          onDeleteContact={this.deleteContact}
+        />
       </div>
     );
   }
