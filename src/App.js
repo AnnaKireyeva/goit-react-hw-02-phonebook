@@ -60,10 +60,10 @@ class App extends Component {
     const filteredContacts = this.filterContacts();
     return (
       <div className="App">
-        <h1>Phonebook</h1>
+        <h1 className="Title">Phonebook</h1>
         <AddContactForm onSubmit={this.addContact} />
 
-        <h2>Contacts</h2>
+        <h2 className="Title">Contacts</h2>
         <Filter value={this.state.filter} onChangeFilter={this.changeFilter} />
 
         <ContactList

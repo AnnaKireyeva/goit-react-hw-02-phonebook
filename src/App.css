@@ -2,7 +2,12 @@
   text-align: center;
 }
 
-.App-logo {
+.Title {
+  font-size: 36px;
+  color: rgb(77, 79, 80);
+}
+
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -35,4 +40,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
