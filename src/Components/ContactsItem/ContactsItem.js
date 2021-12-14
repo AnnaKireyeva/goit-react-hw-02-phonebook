@@ -9,8 +9,7 @@ const ContactsItem = ({ id, name, number, onDeleteContact }) => {
         <p className={styles.contactName}>{name}:</p>
         <p className={styles.contactNumber}>{number}</p>
       </div>
-      {/* <p className={styles.contactName}>{name}:</p>
-      <p className={styles.contactNumber}>{number}</p> */}
+
       <button
         type="button"
         onClick={() => onDeleteContact(id)}
