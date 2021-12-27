@@ -19,8 +19,12 @@ const ContactList = ({ filteredContacts, onDeleteContact }) => {
   );
 };
 
-ContactList.propTypes = {
-  filteredContacts: PropTypes.array,
+ContactList.propTypes = {  
+  filteredContacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   onClick: PropTypes.func,
 };
 

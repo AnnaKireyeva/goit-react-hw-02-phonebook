@@ -4,7 +4,7 @@ import styles from './ContactsItem.module.css';
 
 const ContactsItem = ({ id, name, number, onDeleteContact }) => {
   return (
-    <li key={id} className={styles.contactsItem}>
+    <li className={styles.contactsItem}>
       <div className={styles.contactWrapper}>
         <p className={styles.contactName}>{name}:</p>
         <p className={styles.contactNumber}>{number}</p>
